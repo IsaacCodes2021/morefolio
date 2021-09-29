@@ -5,8 +5,10 @@ import {
     TextField,
     Button
 } from '@mui/material/';
+import { useHistory } from 'react-router-dom';
 
 function AddToPortfolio({portDialog, setPortDialog, data}) {
+    const history = useHistory()
     const [addtoPortForm, setAddToPortForm] = useState({
         ticker: data.symbol,
         name: data.name,
@@ -35,7 +37,7 @@ function AddToPortfolio({portDialog, setPortDialog, data}) {
             body: JSON.stringify(formDataToApi)
         })
         .then(res => res.json())
-        .then(console.log)
+        .then(() => {history.push('/my-portfolio')})
     }
 
     return(

@@ -3,13 +3,15 @@ import {
     Typography
 } from '@mui/material'
 import PortfolioTable from '../tables/PortfolioTable'
-
+import { useState } from 'react'
 function PortfolioPage({user}) {
+    const [valuesArray, setvaluesArray] = useState([])
+    const [myPortfolioValue, setMyPortfolioValue] = useState(0)
     return ( user ?
         <Box>
-            
             <Typography variant="h4">My Portfolio</Typography>
-            <PortfolioTable user={user}/>
+            <Typography>Current value: ${myPortfolioValue}</Typography>
+            <PortfolioTable user={user} setvaluesArray={setvaluesArray} valuesArray={valuesArray}/>
             
         </Box>
         :

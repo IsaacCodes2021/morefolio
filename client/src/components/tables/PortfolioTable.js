@@ -16,14 +16,15 @@ import {
 } from 'react'
 import PortfolioItemInfo from '../Dialogs/PortfolioItemInfo';
 import UpdatePortfolioItem from '../Dialogs/UpdartePortfolioItem';
+import DeletePortfolioItem from '../Dialogs/DeletePortfolioItem';
 
-function PortfolioTable({user}) {
+function PortfolioTable({user, setValuesArray, valuesArray}) {
     const [priceData, setPriceData] = useState(false)
     const [tickerForFetch, setTickerForFetch] = useState(false)
     const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false)
     const [dialogData, setDialogData] = useState(false)
     const [isUpdateOpen, setIsUpdateOpen] = useState(false)
-    const [usDeleteOpen, setIsDeleteOpen] = useState(false)
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
     useEffect(() => {
        const  tickers = user.portfolio_items.map((portfolioObj) => portfolioObj.ticker)
@@ -72,8 +73,9 @@ function PortfolioTable({user}) {
     
     return (
         <Box>
-            <PortfolioItemInfo setIsOpen={setIsInfoDialogOpen} isOpen={isInfoDialogOpen} dialogData={dialogData} setIsUpdateOpen={setIsUpdateOpen}/>
+            <PortfolioItemInfo setIsOpen={setIsInfoDialogOpen} isOpen={isInfoDialogOpen} dialogData={dialogData} setIsUpdateOpen={setIsUpdateOpen} setIsDeleteOpen={setIsDeleteOpen} isDeleteOpen={isDeleteOpen}/>
             <UpdatePortfolioItem isUpdateOpen={isUpdateOpen} setIsUpdateOpen={setIsUpdateOpen} dialogData={dialogData}/>
+            <DeletePortfolioItem setIsDeleteOpen={setIsDeleteOpen} isDeleteOpen={isDeleteOpen} dialogData={dialogData}/>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -89,11 +91,14 @@ function PortfolioTable({user}) {
                     </TableHead>
                     <TableBody>
                         {user.portfolio_items.map((portfolioItem) => {
+                            // setValuesArray([...valuesArray,
+                            //     priceData[portfolioItem.ticker].values[0].close * portfolioItem.quantity
+                            // ])
                             return (
                                 <TableRow >
                                     <TableCell>{portfolioItem.ticker}</TableCell>
                                     {priceData ? 
-                                    <TableCell>${priceData[`${portfolioItem.ticker}`].values[0].close}</TableCell>
+                                    <TableCell>${priceData[portfolioItem.ticker].values[0].close}</TableCell>
                                     :
                                     <TableCell>waiting</TableCell>
                                     }

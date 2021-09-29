@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # portfolio_items
   post '/portfolio_item', to: 'portfolio_items#create'
   patch '/portfolio_item/:id', to: 'portfolio_items#update'
-  delete '/portfolio_item/:id', to: 'portfolio_items#destroy'
+  delete '/portfolio-item/:id', to: 'portfolio_items#destroy'
 
   # watchlists
   post '/watchlists', to: 'watchlists#create'

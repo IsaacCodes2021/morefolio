@@ -7,7 +7,7 @@ import {
     Typography
 } from '@mui/material/';
 
-function PortfolioItemInfo({ isOpen, setIsOpen, dialogData, setIsUpdateOpen }) {
+function PortfolioItemInfo({ isOpen, setIsOpen, dialogData, setIsUpdateOpen, setIsDeleteOpen, isDeleteOpen }) {
 
 
     function handleUpdateButton() {
@@ -17,12 +17,13 @@ function PortfolioItemInfo({ isOpen, setIsOpen, dialogData, setIsUpdateOpen }) {
 
     function handleDeleteButton() {
         setIsOpen((isOpen) => setIsOpen(!isOpen))
+        setIsDeleteOpen(!isDeleteOpen)
     }
 
     return(
         <Dialog open={isOpen} onClose={(isOpen) => setIsOpen(!isOpen)}>
             <DialogTitle>{dialogData.ticker}</DialogTitle>
-            <Typography>{dialogData.quantity}</Typography>
+            <Typography >{dialogData.quantity}</Typography>
             <Typography>{dialogData.purchase_price}</Typography>
             <Button onClick={handleUpdateButton}>update holdings</Button>
             <Button onClick={handleDeleteButton}>Remove</Button>
