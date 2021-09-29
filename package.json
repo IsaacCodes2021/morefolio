@@ -9,5 +9,11 @@
     "clean": "rm -rf public",
     "deploy": "cp -a client/build/. public/",
     "heroku-postbuild": "npm run clean && npm run build && npm run deploy"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^5.0.1",
+    "@mui/material": "^5.0.0",
+    "chart.js": "^3.5.1",
+    "react-chartjs-2": "^3.0.5"
   }
 }

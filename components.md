@@ -1,7 +1,7 @@
 # Morefolio 2.0 components
 
 ## pages
-- LoginPage
+- AuthPage
 - HomePage
 - MyAccountPage
 - PortfolioPage

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+    before_action :authorize, except: :create
     def create
         user = User.create!(user_params)
         session[:user_id] = user.id
