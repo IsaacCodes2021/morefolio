@@ -1,10 +1,10 @@
 import { Container } from '@mui/material';
 import Signup from '../forms/Signup';
 
-function SignupPage() {
+function SignupPage({setUser}) {
     return (
         <Container>
-            <Signup />
+            <Signup setUse={setUser}/>
         </Container>
     )
 }

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authorize, except: :create
+    before_action :authorize, except: [:create, :avatar]
     def create
         user = User.create!(user_params)
         session[:user_id] = user.id
@@ -18,6 +18,11 @@ class UsersController < ApplicationController
     def destroy
         user.find(params[:id]).destroy
         head :no_content
+    end
+    
+    def avatar
+        user = User.find(params[:id])
+        render json: {img: user[:profile_img]}, status: :ok
     end
 
     private

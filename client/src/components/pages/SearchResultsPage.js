@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import {
-  Box
+  Box, Typography
 } from "@mui/material";
 import SearchResultCard from "../Cards/SearchResultCard";
 
-function SearchResultsPage({ results, user }) {
+function SearchResultsPage({ results, user, priceData, setPriceData, tickerForFetch, setTickerForFetch }) {
   const [searchResults, setSearchResults] = useState([]);
+  console.log("search page: ", tickerForFetch)
   useEffect(() => {
     fetch(
       `https://api.twelvedata.com/symbol_search?symbol=${results}&outputsize=120`
@@ -19,13 +20,13 @@ function SearchResultsPage({ results, user }) {
   console.log(searchResults);
   return (
     <Box>
-      {results ?
+      { user ?
        searchResults.map((element) => {
             return (
-                <SearchResultCard res={element} user={user}/>
+                <SearchResultCard res={element} user={user} priceData={priceData} setPriceData={setPriceData} tickerForFetch={tickerForFetch} setTickerForFetch={setTickerForFetch}/>
               )
           })
-        : null}
+        : <Typography>Sign in to use this feature</Typography>}
     </Box>
   );
 }

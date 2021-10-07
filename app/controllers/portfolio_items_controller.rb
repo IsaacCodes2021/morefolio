@@ -15,7 +15,7 @@ class PortfolioItemsController < ApplicationController
     def destroy
         delete_port_item = PortfolioItem.find(params[:id])
         delete_port_item.destroy
-        head :no_content, status: :ok
+        render json: @user.portfolio_items, status: :ok
     end
 
     private

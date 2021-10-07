@@ -11,25 +11,25 @@ import InfoDialog from "../Dialogs/InfoDialog";
 import { useState } from "react";
 require('dotenv').config()
 
-function SearchResultCard({ res, user }) {
+function SearchResultCard({ res, user, priceData, setPriceData, tickerForFetch, setTickerForFetch  }) {
     const [isPortDialogOpen, setIsPortDialogOpen] = useState(false)
     const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false)
     const [selectedTickerData, setSelectedTickerData] = useState(false)
     const [isWatchDialogOpen, setIsWatchDialogOpen] = useState(false)
 
     function portDialog() {
-        fetch(`https://api.twelvedata.com/quote?symbol=${res.symbol}&apikey=5b65bc522cdd4e51a3c12d1073b5e3ef`)
-        .then(r => r.json())
-        .then(setSelectedTickerData)
-        setIsPortDialogOpen(true)
-        // console.log(process.env.TWELVEDATA_API_TOKEN)
+      fetch(`https://api.twelvedata.com/quote?symbol=${res.symbol}&apikey=60af8428441c4634a020712e7cd5f7e1`)
+      .then(r => r.json())
+      .then(setSelectedTickerData)
+      setIsPortDialogOpen(true)
+      // console.log(process.env.TWELVEDATA_API_TOKEN)
     }
 
     function infoDialog() {
-            fetch(`https://api.twelvedata.com/quote?symbol=${res.symbol}&apikey=5b65bc522cdd4e51a3c12d1073b5e3ef`)
-            .then(r => r.json())    
-            .then(setSelectedTickerData)
-            setIsInfoDialogOpen(true)
+      fetch(`https://api.twelvedata.com/quote?symbol=${res.symbol}&apikey=60af8428441c4634a020712e7cd5f7e1`)
+      .then(r => r.json())
+      .then(setSelectedTickerData)
+      setIsInfoDialogOpen(true)
     }
 
     function watchDialog() {
@@ -37,18 +37,35 @@ function SearchResultCard({ res, user }) {
     }
 
   return (
-    <Box>  
-        {selectedTickerData && <AddToPortfolio portDialog={isPortDialogOpen} setPortDialog={setIsPortDialogOpen} data={selectedTickerData}/>}
+    <Box>
+        {selectedTickerData && <AddToPortfolio portDialog={isPortDialogOpen} setPortDialog={setIsPortDialogOpen} data={selectedTickerData} priceData={priceData} setPriceData={setPriceData} tickerForFetch={tickerForFetch} setTickerForFetch={setTickerForFetch}/>}
         {selectedTickerData && <InfoDialog isOpen={isInfoDialogOpen} setOpen={setIsInfoDialogOpen} data={selectedTickerData}/>}
         <AddToWatchList isOpen={isWatchDialogOpen} setOpen={setIsWatchDialogOpen} user={user} cardData={res}/>
-      <Card>
+      <Card
+      style={{margin:'4%'}}
+      >
         <CardContent>
+          <Box sx={{display:'flex'}}>
           <Typography variant="h5">{res.symbol}</Typography>
+          <Button 
+          variant="contained" 
+          onClick={infoDialog}
+          style={{marginLeft:'12px'}}
+          >info</Button>
+          </Box>
           <Typography>company: {res.instrument_name}</Typography>
           <Typography>exchange: {res.exchange}</Typography>
-          <Button variant="contained" onClick={portDialog}>Add to portolio</Button>
-          <Button variant="contained" onClick={watchDialog}>Add to a watchlist</Button>
-          <Button variant="contained" onClick={infoDialog}>info</Button>
+          <Button 
+          variant="contained" 
+          onClick={portDialog}
+          style={{marginBottom:'8px', marginRight: "8px"}}
+          >Add to portolio</Button>
+          <Button 
+          variant="contained" 
+          onClick={watchDialog}
+          style={{marginBottom:'8px'}}
+          >Add to a watchlist</Button>
+          
         </CardContent>
       </Card>
     </Box>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./App.css";
+import HomePage from "./components/pages/HomePage";
 import SignupPage from "./components/pages/SignupPage";
 import SignInPage from "./components/pages/SignInPage";
 import MyAppBar from "./components/MyAppBar";
@@ -9,6 +10,7 @@ import UserPage from "./components/pages/UserPage";
 import PortfolioPage from "./components/pages/PortfolioPage";
 import WatchListPage from "./components/pages/WatchListPage";
 import SearchResultsPage from "./components/pages/SearchResultsPage";
+import FourmPage from "./components/pages/FourmPage";
 
 const theme = createTheme({
   palette: {
@@ -32,6 +34,9 @@ const theme = createTheme({
 function App() {
   const [user, setUser] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
+  const [priceData, setPriceData] = useState(false)
+  const [tickerForFetch, setTickerForFetch] = useState(false)
+
 
   useEffect(() => {
     // checks for user
@@ -39,11 +44,20 @@ function App() {
       .then((r) => r.json())
       .then((userData) => {
         if (userData.errors) {
+          console.log(userData.errors)
         } else {
           setUser(userData);
+          //setTickerArray(user.portfolio_items)
         }
       });
   }, []);
+
+  function setTickerArray(arrOfObj) {
+    const  tickers = arrOfObj.map((portfolioObj) => portfolioObj.ticker)
+    setTickerForFetch(tickers)
+    console.log("tick array", tickerForFetch)
+  }
+  
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -54,8 +68,11 @@ function App() {
           searchResults={searchResults}
         />
         <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
           <Route path="/signup">
-            <SignupPage />
+            <SignupPage setUser={setUser}/>
           </Route>
           <Route path="/signin">
             <SignInPage setUser={setUser} />
@@ -64,13 +81,16 @@ function App() {
             <UserPage user={user} setUser={setUser} />
           </Route>
           <Route path="/my-portfolio">
-            <PortfolioPage user={user}/>
+            <PortfolioPage user={user} priceData={priceData} setPriceData={setPriceData} tickerForFetch={tickerForFetch} setTickerForFetch={setTickerForFetch}/>
           </Route>
           <Route path="/my-watchlists">
             <WatchListPage user={user}/>
           </Route>
           <Route path="/asset-search">
-            <SearchResultsPage results={searchResults} user={user}/>
+            <SearchResultsPage results={searchResults} user={user} priceData={priceData} setPriceData={setPriceData} tickerForFetch={tickerForFetch} setTickerForFetch={setTickerForFetch}/>
+          </Route>
+          <Route path="/forum">
+            <FourmPage user={user}/>
           </Route>
         </Switch>
       </BrowserRouter>

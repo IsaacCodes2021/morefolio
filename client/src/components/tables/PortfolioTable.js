@@ -7,7 +7,8 @@ import {
     TableContainer,
     Paper,
     Box,
-    Button
+    Button,
+    Typography
 } from '@mui/material'
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { 
@@ -18,31 +19,31 @@ import PortfolioItemInfo from '../Dialogs/PortfolioItemInfo';
 import UpdatePortfolioItem from '../Dialogs/UpdartePortfolioItem';
 import DeletePortfolioItem from '../Dialogs/DeletePortfolioItem';
 
-function PortfolioTable({user, setValuesArray, valuesArray}) {
-    const [priceData, setPriceData] = useState(false)
-    const [tickerForFetch, setTickerForFetch] = useState(false)
+function PortfolioTable({user, priceData, setPriceData, tickerForFetch, setTickerForFetch}) {
     const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false)
     const [dialogData, setDialogData] = useState(false)
     const [isUpdateOpen, setIsUpdateOpen] = useState(false)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+    const [portfolioItems, setPortfolioItems] = useState(user.portfolio_items)
+    let price=0
+    
+    useEffect(() => {
+        fetch('/me')
+        .then(res => res.json())
+        .then(data => {
+            setPortfolioItems(data.portfolio_items)
+            console.log("from fetch")
+            console.log(portfolioItems)
+            const  tickers = portfolioItems.map((portfolioObj) => portfolioObj.ticker)
+            setTickerForFetch(tickers)
+        })
+    },[])
 
     useEffect(() => {
-       const  tickers = user.portfolio_items.map((portfolioObj) => portfolioObj.ticker)
+        const  tickers = portfolioItems.map((portfolioObj) => portfolioObj.ticker)
+        setTickerForFetch(tickers)
+    },[portfolioItems])
 
-       setTickerForFetch(tickers)
-    },[user])
-
-    useEffect(() => {
-        if(tickerForFetch) {
-            fetch(`https://api.twelvedata.com/time_series?symbol=${tickerForFetch}&interval=1min&apikey=5b65bc522cdd4e51a3c12d1073b5e3ef`)
-            .then(r => r.json())
-            .then(response => setPriceData(response))
-        }
-        else if (tickerForFetch !== []){
-            
-        }
-       
-    },[tickerForFetch])
 
     function profitLossPercent(standingValue, purchaseValue) {
         // if profit
@@ -66,16 +67,43 @@ function PortfolioTable({user, setValuesArray, valuesArray}) {
     }
 
     function handleRowClick(e) {
-        console.log(e)
         setIsInfoDialogOpen(true)
         setDialogData(e)
     }
-    
+
+    function getTotalPriceData(standingPrice, quantity) {
+        price = price + (standingPrice * quantity)
+        console.log(price)
+        return standingPrice * quantity
+
+    }
+    console.log("pricedata: ",priceData)
     return (
         <Box>
-            <PortfolioItemInfo setIsOpen={setIsInfoDialogOpen} isOpen={isInfoDialogOpen} dialogData={dialogData} setIsUpdateOpen={setIsUpdateOpen} setIsDeleteOpen={setIsDeleteOpen} isDeleteOpen={isDeleteOpen}/>
-            <UpdatePortfolioItem isUpdateOpen={isUpdateOpen} setIsUpdateOpen={setIsUpdateOpen} dialogData={dialogData}/>
-            <DeletePortfolioItem setIsDeleteOpen={setIsDeleteOpen} isDeleteOpen={isDeleteOpen} dialogData={dialogData}/>
+            <PortfolioItemInfo 
+                setIsOpen={setIsInfoDialogOpen} 
+                isOpen={isInfoDialogOpen} 
+                dialogData={dialogData} 
+                setIsUpdateOpen={setIsUpdateOpen}
+                setIsDeleteOpen={setIsDeleteOpen} 
+                isDeleteOpen={isDeleteOpen} 
+                setPortfolioItems={setPortfolioItems} 
+                portfolioItems={portfolioItems}
+            />
+            <UpdatePortfolioItem 
+                isUpdateOpen={isUpdateOpen} 
+                setIsUpdateOpen={setIsUpdateOpen} 
+                dialogData={dialogData}
+                setPortfolioItems={setPortfolioItems} 
+                portfolioItems={portfolioItems}
+            />
+            <DeletePortfolioItem 
+                setIsDeleteOpen={setIsDeleteOpen} 
+                isDeleteOpen={isDeleteOpen} 
+                dialogData={dialogData} 
+                setPortfolioItems={setPortfolioItems} 
+                portfolioItems={portfolioItems}
+            />
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -89,26 +117,26 @@ function PortfolioTable({user, setValuesArray, valuesArray}) {
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {user.portfolio_items.map((portfolioItem) => {
-                            // setValuesArray([...valuesArray,
-                            //     priceData[portfolioItem.ticker].values[0].close * portfolioItem.quantity
-                            // ])
-                            return (
+                    
+                    <TableBody>{priceData? <>
+                        {portfolioItems.map((portfolioItem) => {
+                            console.log("--------items------")
+                            console.log("ticker: ",(priceData[portfolioItem.ticker]))
+                            return ( portfolioItems && priceData?
                                 <TableRow >
                                     <TableCell>{portfolioItem.ticker}</TableCell>
-                                    {priceData ? 
-                                    <TableCell>${priceData[portfolioItem.ticker].values[0].close}</TableCell>
+                                    {priceData && portfolioItems ? 
+                                    <TableCell>${parseFloat(priceData[portfolioItem.ticker].values[0].close).toFixed(2)}</TableCell>
                                     :
                                     <TableCell>waiting</TableCell>
                                     }
                                     <TableCell>{portfolioItem.quantity}</TableCell>
-                                    {priceData ? 
-                                    <TableCell>{priceData[`${portfolioItem.ticker}`].values[0].close * portfolioItem.quantity}</TableCell>
+                                    {priceData && portfolioItems ? 
+                                    <TableCell>{getTotalPriceData(priceData[`${portfolioItem.ticker}`].values[0].close, portfolioItem.quantity).toFixed(2)}</TableCell>
                                     :
                                     <TableCell>waiting</TableCell>
                                     }
-                                    {priceData ?
+                                    {priceData && portfolioItems ?
                                     <TableCell>
                                         {profitLossPercent(
                                         priceData[`${portfolioItem.ticker}`].values[0].close * portfolioItem.quantity,
@@ -118,7 +146,7 @@ function PortfolioTable({user, setValuesArray, valuesArray}) {
                                     :
                                     <TableCell>waiting</TableCell>
                                     }
-                                    {priceData ?
+                                    {priceData && portfolioItems ?
                                     <TableCell>
                                         {profitLossDollar(
                                             priceData[`${portfolioItem.ticker}`].values[0].close * portfolioItem.quantity,
@@ -137,8 +165,24 @@ function PortfolioTable({user, setValuesArray, valuesArray}) {
                                         </Button>
                                     </TableCell>
                                 </TableRow>
+                                :
+                                null
                             )
                         })}
+                        <TableRow style={{backgroundColor:'#90EE90'}}>
+                            <TableCell>
+                                <Typography variant='h5'>Total</Typography>
+                            </TableCell>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                            <TableCell><Typography variant='h5'>${price.toFixed(2)}</Typography></TableCell>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                            <TableCell></TableCell>
+                            
+                        </TableRow></>
+                        :
+                        null }
                     </TableBody>
                 </Table>
             </TableContainer>

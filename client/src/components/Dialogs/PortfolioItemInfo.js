@@ -9,7 +9,7 @@ import {
 
 function PortfolioItemInfo({ isOpen, setIsOpen, dialogData, setIsUpdateOpen, setIsDeleteOpen, isDeleteOpen }) {
 
-
+    console.log(dialogData)
     function handleUpdateButton() {
         setIsOpen((isOpen) => setIsOpen(!isOpen))
         setIsUpdateOpen(true)
@@ -23,10 +23,14 @@ function PortfolioItemInfo({ isOpen, setIsOpen, dialogData, setIsUpdateOpen, set
     return(
         <Dialog open={isOpen} onClose={(isOpen) => setIsOpen(!isOpen)}>
             <DialogTitle>{dialogData.ticker}</DialogTitle>
-            <Typography >{dialogData.quantity}</Typography>
-            <Typography>{dialogData.purchase_price}</Typography>
+            <Typography
+            style={{marginLeft: "8px"}}
+            >holdings: {dialogData.quantity}</Typography>
+            <Typography
+            style={{marginLeft: "8px"}}
+            >purchase price: {dialogData.purchase_price}</Typography>
             <Button onClick={handleUpdateButton}>update holdings</Button>
-            <Button onClick={handleDeleteButton}>Remove</Button>
+            <Button onClick={handleDeleteButton} color="error">Remove</Button>
         </Dialog>
     )
 }

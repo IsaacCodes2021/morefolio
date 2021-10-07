@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import {
     TextField,
     Box,
@@ -7,6 +7,8 @@ import {
 }from '@mui/material/';
 
 function Signin({ setUser }) {
+
+    const history = useHistory()
     const [signInForm, setSigniInForm] = useState({
         username: "",
         password: ""
@@ -38,6 +40,7 @@ function Signin({ setUser }) {
             if (response.ok) {
                 response.json()
                 .then(data=> setUser(data))
+                history.push('/my-account')
             }
             else {
                 response.json()

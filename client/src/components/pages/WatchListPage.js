@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
     Box,
     Typography,
@@ -11,17 +11,30 @@ import WatchListTable from '../tables/WatchListTable'
 
 function WatchListPage({user}) {
     const [selectedWatchlist, setSelectedWatchlist] = useState(false)
+    const [priceData, setPriceData] = useState(false)
+
+    useEffect(() => {
+        console.log("selected watchlist change")
+    }, [selectedWatchlist])
 
     function handleSelectChange(e) {
-        setSelectedWatchlist(e.target.value)
+        if(e.target.value !== "list"){
+            setSelectedWatchlist(e.target.value)
+            setPriceData(false)
+        }
     }
 
     return ( user ?
         <Box>
-            <Select onChange={handleSelectChange}>
+            <Select 
+            onChange={handleSelectChange} 
+            defaultValue="list"
+            style={{margin:'8px'}}
+            >
+                <MenuItem value="list">select a list</MenuItem>
                 {user.watchlists.map((watchlistObj) => {
                     return(
-                        <MenuItem 
+                        <MenuItem
                         value={watchlistObj.id}
                         >
                             {watchlistObj.name}
@@ -29,7 +42,7 @@ function WatchListPage({user}) {
                     )
                 })}
             </Select>
-            <WatchListTable selectedWatchlist={selectedWatchlist}/>
+            <WatchListTable selectedWatchlist={selectedWatchlist} setPriceData={setPriceData} priceData={priceData}/>
         </Box>
         :
         <Typography variant="h4">login to see page</Typography>

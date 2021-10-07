@@ -8,8 +8,8 @@ import {
 
 function EditUserDialog({ editDialog, setEditDialog, user, setUser }) {
     const [updateUserData, setUpdateUserData] = useState({
-            username: "",
-            profile_img: ""            
+            username: user.username,
+            profile_img: user.profile_img            
         }
     )
     
@@ -35,6 +35,11 @@ function EditUserDialog({ editDialog, setEditDialog, user, setUser }) {
             [e.target.name]: e.target.value
         })
     }
+
+    function handleDeleteAccount() {
+        
+    }
+
     return(
         <Dialog
         open={editDialog}
@@ -62,6 +67,7 @@ function EditUserDialog({ editDialog, setEditDialog, user, setUser }) {
                     update
                 </Button>
             </form>
+            <Button color="error" onClick={handleDeleteAccount}>Delete Account</Button>
         </Dialog>
     )
 }

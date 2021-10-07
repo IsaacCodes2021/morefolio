@@ -5,20 +5,20 @@ import {
   Avatar,
   Box,
   TextField,
+  Toolbar
 } from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
+//import imageLogo from '/more-f.jpg'
+import MyDrawer from "./MyDrawer";
 
 function MyAppBar({ user, setUser, searchResults, setSearchResults }) {
-
-    const [searchBar, setSearchBar] = useState('')
+  const [lastTotalValue, setLastTotalValue] = useState(0)
+  const [searchBar, setSearchBar] = useState('')
+  const [drawrOpen, setDrawrOpen] = useState(false)
   const history = useHistory();
-  function handleLogOut() {
-    fetch("/logout", {
-      method: "DELETE",
-    });
-    setUser(false);
-  }
+  
   function handleSearch(e) {
     e.preventDefault();
     setSearchResults(e.target.search.value)
@@ -30,29 +30,38 @@ function MyAppBar({ user, setUser, searchResults, setSearchResults }) {
     setSearchBar(e.target.value)
   }
 
+  function handleLogoClick() {
+    setDrawrOpen(!drawrOpen)
+
+  }
+
 
   return (
-    <AppBar position="static" color="primary">
-      <Typography variant="h6">Morefolio</Typography>
-      {user ? (
-        <Box>
-          <Button color="third" variant="contained" onClick={handleLogOut}>
-            Logout
-          </Button>
-          <Link to="/my-account">
-            <Avatar src={user.profile_img} />
-          </Link>
+    <AppBar position="static" color="third">
+      <MyDrawer setDrawerOpen={setDrawrOpen} drawerOpen={drawrOpen} setUser={setUser}/>
+      <Toolbar >
+        <img width="110" src="/morefolio.png" onClick={handleLogoClick} />
+        <Box sx={{padding: "inherit", height:"inherit", width: "30%"}}>
+        <form onSubmit={handleSearch}>
+          <TextField size="small" label="search stocks and crypto" name="search" onChange={handleSearchChange} value={searchBar} />
+        </form>
         </Box>
-      ) : (
-        <Link to="/signin">
-          <Button variant="contained" color="third">
-            sign in
-          </Button>
-        </Link>
-      )}
-      <form onSubmit={handleSearch}>
-        <TextField label="search stocks and crypto" name="search" onChange={handleSearchChange} value={searchBar}/>
-      </form>
+        {user ? (
+          <Box style={{position: 'absolute', right: 0}}>
+            <Toolbar >
+            <Link to="/my-account">
+              <Avatar src={user.profile_img} />
+            </Link>
+            </Toolbar>
+          </Box>
+        ) : (
+          <Link to="/signin">
+            <Button variant="contained" color="primary">
+              sign in
+            </Button>
+          </Link>
+        )}
+      </Toolbar>
     </AppBar>
   );
 }
