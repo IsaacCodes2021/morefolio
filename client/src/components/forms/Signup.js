@@ -69,18 +69,20 @@ function Signup({ setUser }) {
                 <TextField
                 name="password"
                 label="Password"
+                type="password"
                 onChange={onFormChange}
                 value={signUpForm.password} 
                 />
                 <TextField
                 name="passwordConfirmation"
                 label="Confirm Password"
+                type="password"
                 onChange={onFormChange}
                 value={signUpForm.passwordConfirmation}
                 />
                 <Button 
                 variant="contained" 
-                type=""
+                type="submit"
                 >
                     submit
                 </Button>

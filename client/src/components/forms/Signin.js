@@ -61,6 +61,7 @@ function Signin({ setUser }) {
                 <TextField
                 name="password"
                 label="Password"
+                type="password"
                 onChange={onFormChange}
                 value={signInForm.password} 
                 />
