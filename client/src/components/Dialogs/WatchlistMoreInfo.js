@@ -28,7 +28,7 @@ function WatchListMoreInfo({isOpen, setOpen, data, setWatchlistItems}) {
             data ? <>
             <DialogTitle>{data.symbol} info</DialogTitle>
             <TableContainer component={Paper}>
-                <Table>
+                <Table style={{marginLeft: '8px', marginRight: '8px'}}>
                     <TableBody>
                         <TableRow>
                             <TableCell>full name</TableCell>

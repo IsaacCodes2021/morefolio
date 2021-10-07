@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import {
     TextField,
     Box,
@@ -8,6 +8,7 @@ import {
 
 
 function Signup({ setUser }) {
+    const history = useHistory()
     const [signUpForm, setSignupForm] = useState({
         username: "",
         email: "",
@@ -52,37 +53,46 @@ function Signup({ setUser }) {
     }
 
     return(
-        <Box>
+        <Box style={{width: "320px", margin:'auto'}}>
             <form onSubmit={submitNewUser}>
                 <TextField
                 name="username"
                 label="Username"
                 onChange={onFormChange}
                 value={signUpForm.username}
-                />
+                size="small"
+                style={{marginTop:'10%'}}
+                /><br/>
                 <TextField
                 name="email"
                 label="Email"
                 onChange={onFormChange} 
                 value={signUpForm.email}
-                />
+                size="small"
+                style={{marginTop:'8px'}}
+                /><br />
                 <TextField
                 name="password"
                 label="Password"
                 type="password"
                 onChange={onFormChange}
-                value={signUpForm.password} 
-                />
+                value={signUpForm.password}
+                size="small"
+                style={{marginTop:'8px'}}
+                /><br />
                 <TextField
                 name="passwordConfirmation"
                 label="Confirm Password"
                 type="password"
                 onChange={onFormChange}
                 value={signUpForm.passwordConfirmation}
-                />
+                size="small"
+                style={{marginTop:'8px'}}
+                /><br />
                 <Button 
                 variant="contained" 
                 type="submit"
+                style={{marginTop:'8px'}}
                 >
                     submit
                 </Button>
@@ -90,8 +100,8 @@ function Signup({ setUser }) {
             <Link 
                 to="/signin"
             >
-                <Button 
-                    variant="contained"
+                <Button
+                style={{marginTop:'8px'}}
                 > 
                     Already have an account?
                 </Button>

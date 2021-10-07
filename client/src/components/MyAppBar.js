@@ -55,8 +55,11 @@ function MyAppBar({ user, setUser, searchResults, setSearchResults }) {
             </Toolbar>
           </Box>
         ) : (
-          <Link to="/signin">
-            <Button variant="contained" color="primary">
+          <Link to="/signin" style={{position: 'absolute', right: 16}}>
+            <Button 
+            variant="contained" 
+            color="primary"
+            >
               sign in
             </Button>
           </Link>

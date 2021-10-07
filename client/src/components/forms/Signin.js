@@ -50,35 +50,38 @@ function Signin({ setUser }) {
     }
 
     return (
-        <Box>
+        <Box style={{width: "320px", margin:'auto'}}>
             <form onSubmit={submitSignIn}>
                 <TextField
                 name="username"
                 label="Username"
                 onChange={onFormChange}
                 value={signInForm.username}
-                />
+                size="small"
+                style={{marginTop:'10%', marginBottom: '8px', width: "312px"}}
+                /><br/>
                 <TextField
                 name="password"
                 label="Password"
                 type="password"
                 onChange={onFormChange}
-                value={signInForm.password} 
+                value={signInForm.password}
+                size="small"
+                style={{marginBottom: "8px"}}
                 />
-                <Button 
-                variant="contained" 
-                type=""
+                <Button
+                variant="contained"
+                type="submit"
+                style={{marginLeft: "8px", marginTop: "2px"}}
                 >
                     signin
+                </Button><br/>
+                <Button
+                onClick={() => history.push("/signup")}
+                >
+                    don't have an account?
                 </Button>
-                <Link 
-                to="/signup">
-                    <Button
-                    variant="contained"
-                    >
-                        don't have an account?
-                    </Button>
-                </Link>
+            
 
             </form>
         </Box>

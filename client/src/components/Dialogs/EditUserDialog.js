@@ -52,17 +52,22 @@ function EditUserDialog({ editDialog, setEditDialog, user, setUser }) {
                     name="username"
                     value={updateUserData.username}
                     onChange={handleFormChange}
-                />
+                    size='small'
+                    style={{marginLeft:"8px", marginRight: "8px"}}
+                /><br/>
                 <TextField 
                     label="profile picture"
                     name="profile_img"
                     value={updateUserData.profile_img}
                     onChange={handleFormChange}
-                />
+                    size='small'
+                    style={{marginLeft:"8px", marginRight: "8px", marginTop:"8px"}}
+                /><br/>
                 <Button
                     variant="contained"
                     type="submit"
                     onClick={console.log(updateUserData)}
+                    style={{marginLeft:"8px", marginRight: "8px", marginTop:"8px", marginBottom: '8px'}}
                 >
                     update
                 </Button>
