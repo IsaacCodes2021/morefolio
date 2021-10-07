@@ -41,7 +41,20 @@ function Signup({ setUser }) {
                 body: JSON.stringify(userData)
             })
             .then(r => r.json())
-            .then(console.log)
+            .then((data) => {
+                delete signUpForm.email
+                delete signUpForm.passwordConfirmation
+                console.log("signed up", data)
+                fetch('/login', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(signUpForm)
+            })
+            .then(data=> setUser(data))
+            history.push('/my-account')
+            })
         }   
     }
 

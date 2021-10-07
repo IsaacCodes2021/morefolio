@@ -4,7 +4,7 @@ import Signup from '../forms/Signup';
 function SignupPage({setUser}) {
     return (
         <Container>
-            <Signup setUse={setUser}/>
+            <Signup setUser={setUser}/>
         </Container>
     )
 }
