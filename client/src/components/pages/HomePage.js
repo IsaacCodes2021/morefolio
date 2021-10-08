@@ -64,6 +64,22 @@ function HomePage() {
                 </Box>
                 <img src='./step3.png' style={{width:"100vw"}}/>
             </Card>
+            <Divider style={{marginTop:'4px', marginBottom:'4px'}} />
+            <Divider style={{marginTop:'4px', marginBottom:'4px'}} />
+            <Card
+            style={{border: '2px'}}>
+                <Box sx={{display:'flex'}}>
+                    <Typography 
+                    variant="h4"
+                    style={{textAlign:'left', margin:'8px'}}
+                    >Step 4:</Typography>
+                    <Typography
+                    variant="h6"
+                    style={{marginTop: "13px"}}
+                    >Navigate using the Morefolio logo</Typography>
+                </Box>
+                <img src='./step4.png' style={{width:"100vw"}}/>
+            </Card>
         </Box>
     )
 }

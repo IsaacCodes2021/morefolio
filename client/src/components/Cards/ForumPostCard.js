@@ -89,6 +89,7 @@ function PostCard({post, user}) {
         <Card style={{marginBottom: "10px"}}>
             <EditPostDialog isOpen={isEditPostOpen} setIsOpen={setPostOpen} post={post}/>
             <Box sx={{display: "flex"}}>
+                <Avatar src={post.user.profile_img} title={post.user.username} style={{}}/>
                 <Typography sx={{marginLeft: "9px"}} variant="h5">{post.title}</Typography>
                 <Button onClick={handleLikeBtn}>
                     <Typography>{likes}</Typography>
